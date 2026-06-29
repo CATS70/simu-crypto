@@ -3,81 +3,293 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Démo intégration iframe — Simulateur Crypto</title>
+  <title>Simulateurs — S'investir</title>
   <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.9/js/iframeResizer.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: system-ui, sans-serif;
-      background: #f5f5f5;
-      padding: 32px 24px;
-    }
-    h1 {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f0f4f8;
       color: #1a1a2e;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    p {
-      color: #555;
-      margin-bottom: 32px;
+
+    /* ── Header ─────────────────────────────────────── */
+    header {
+      background: #00173F;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: #1098F7;
+    }
+
+    nav {
+      display: flex;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    nav a {
+      padding: 7px 14px;
+      border-radius: 6px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
       font-size: 14px;
+      font-weight: 500;
+      transition: all 0.15s;
     }
-    .iframes-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+
+    nav a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    nav a.active { background: rgba(16,152,247,0.15); color: #1098F7; }
+
+    .nav-cta {
+      background: #1098F7;
+      color: #fff !important;
+      border-radius: 8px;
+      padding: 7px 16px !important;
+      font-weight: 600 !important;
     }
-    .iframe-wrapper {
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+
+    .nav-cta:hover { background: #38aff9 !important; }
+
+    /* ── Layout principal ────────────────────────────── */
+    .page-body {
+      display: flex;
+      flex: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 32px 24px;
+      gap: 32px;
     }
-    .iframe-label {
-      padding: 10px 16px;
-      font-size: 12px;
-      font-weight: 600;
+
+    /* ── Sidebar gauche ──────────────────────────────── */
+    aside {
+      width: 220px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-section {
+      margin-bottom: 28px;
+    }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      background: #f0f0f0;
-      color: #666;
-      border-bottom: 1px solid #ddd;
+      letter-spacing: 0.1em;
+      color: #94a3b8;
+      padding: 0 12px;
+      margin-bottom: 6px;
     }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      color: #475569;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.15s;
+      cursor: pointer;
+    }
+
+    .sidebar-link:hover { background: #e2e8f0; color: #1a1a2e; }
+
+    .sidebar-link.active {
+      background: rgba(16,152,247,0.1);
+      color: #1098F7;
+      font-weight: 600;
+    }
+
+    .sidebar-icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-badge {
+      margin-left: auto;
+      background: #1098F7;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 99px;
+    }
+
+    /* ── Contenu principal ───────────────────────────── */
+    main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    .breadcrumb a { color: #94a3b8; text-decoration: none; }
+    .breadcrumb a:hover { color: #1098F7; }
+    .breadcrumb span { color: #475569; font-weight: 500; }
+
+    .embed-wrapper {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
     iframe {
       width: 100%;
       border: none;
       display: block;
     }
+
+    /* ── Footer ──────────────────────────────────────── */
+    footer {
+      background: #00173F;
+      color: rgba(255,255,255,0.5);
+      font-size: 13px;
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    footer a:hover { color: #fff; }
+
+    .footer-links { display: flex; gap: 24px; }
+
+    /* ── Responsive ──────────────────────────────────── */
+    @media (max-width: 768px) {
+      aside { display: none; }
+      .page-body { padding: 16px; }
+      nav a:not(.nav-cta) { display: none; }
+    }
   </style>
 </head>
 <body>
-  <h1>Démo intégration iframe</h1>
-  <p>Deux instances du simulateur côte à côte, en thèmes dark et light.</p>
-  <div class="iframes-row">
-    <div class="iframe-wrapper">
-      <div class="iframe-label">Thème Dark</div>
-      <iframe
-        id="iframe-dark"
-        src="/embed?theme=dark"
-        scrolling="no"
-        title="Simulateur Crypto — Thème Dark"
-      ></iframe>
-    </div>
-    <div class="iframe-wrapper">
-      <div class="iframe-label">Thème Light</div>
-      <iframe
-        id="iframe-light"
-        src="/embed?theme=light"
-        scrolling="no"
-        title="Simulateur Crypto — Thème Light"
-      ></iframe>
-    </div>
+
+  <header>
+    <a href="#" class="logo">S<span>'</span>investir</a>
+    <nav>
+      <a href="#">Formation</a>
+      <a href="#">Communauté</a>
+      <a href="#" class="active">Simulateurs</a>
+      <a href="#">Blog</a>
+      <a href="#" class="nav-cta">Commencer →</a>
+    </nav>
+  </header>
+
+  <div class="page-body">
+
+    <aside>
+      <div class="sidebar-section">
+        <p class="sidebar-label">Simulateurs</p>
+        <a href="#" class="sidebar-link active">
+          <span class="sidebar-icon">₿</span>
+          Crypto DCA
+          <span class="sidebar-badge">NEW</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">📈</span>
+          Intérêts composés
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">💸</span>
+          Impact des frais
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🏠</span>
+          Immobilier
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">📉</span>
+          Inflation
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">Mon espace</p>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🔖</span>
+          Mes simulations
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">⚙️</span>
+          Paramètres
+        </a>
+      </div>
+    </aside>
+
+    <main>
+      <div class="breadcrumb">
+        <a href="#">Accueil</a>
+        ›
+        <a href="#">Simulateurs</a>
+        ›
+        <span>Crypto DCA</span>
+      </div>
+
+      <div class="embed-wrapper">
+        <iframe
+          id="embed-simulateur"
+          src="/embed?theme=dark"
+          scrolling="no"
+          title="Simulateur Crypto DCA"
+        ></iframe>
+      </div>
+    </main>
+
   </div>
 
+  <footer>
+    <span>© 2025 S'investir — Les informations fournies sont à titre pédagogique uniquement.</span>
+    <div class="footer-links">
+      <a href="#">Mentions légales</a>
+      <a href="#">Politique de confidentialité</a>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
   <script>
-    iFrameResize({ log: false, checkOrigin: false }, '#iframe-dark')
-    iFrameResize({ log: false, checkOrigin: false }, '#iframe-light')
+    iFrameResize({ log: false, checkOrigin: false }, '#embed-simulateur')
   </script>
+
 </body>
 </html>
