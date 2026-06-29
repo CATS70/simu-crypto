@@ -1,0 +1,34 @@
+/* dark.css — charte S'investir (couleurs extraites de entry.BmtM0exk.css)
+   --color-surface:          rgb(8,12,22)   = #080C16  → fond de page
+   --color-surface-soft:     rgb(15,23,42)  = #0F172A  → cartes
+   --color-surface-elevated: rgb(0,23,63)   = #00173F  → éléments surélevés
+*/
+[data-theme="dark"] {
+  --bg: #080C16;
+  --surface: #0F172A;
+  --surface-hover: #131d35;
+  --surface-elevated: #00173F;
+  --text: #FFFFFF;
+  --text-muted: #9CA3AF;
+  --text-inverse: #080C16;
+  --accent-primary: #F8D047;
+  --accent-primary-hover: #fce276;
+  --accent-secondary: #1098F7;
+  --accent-secondary-hover: #38aff9;
+  --border: rgba(255,255,255,0.08);
+  --border-focus: #1098F7;
+  --color-gain: #11D05A;
+  --color-gain-bg: rgba(17,208,90,0.15);
+  --color-loss: #FF0500;
+  --color-loss-bg: rgba(255,5,0,0.15);
+  --color-value: #F8D047;
+  --color-investi: #7C6DB5;
+  --color-acquis: #F8D047;
+  --color-prix: #6B7280;
+  --input-bg: #0F172A;
+  --input-border: rgba(255,255,255,0.12);
+  --card-shadow: 0 10px 25px -10px rgba(16,152,247,0.25);
+  --tooltip-bg: #00173F;
+  --header-simulation: #F8D047;
+  --header-chiffres: #1098F7;
+}

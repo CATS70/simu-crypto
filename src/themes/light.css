@@ -1,0 +1,29 @@
+/* light.css — thème clair (sinvestir.fr marketing) */
+[data-theme="light"] {
+  --bg: #F0F4FA;
+  --surface: #FFFFFF;
+  --surface-hover: #F8FAFC;
+  --surface-elevated: #FFFFFF;
+  --text: #00173F;
+  --text-muted: #6B7280;
+  --text-inverse: #FFFFFF;
+  --accent-primary: #1098F7;
+  --accent-primary-hover: #0284e0;
+  --accent-secondary: #2945A8;
+  --accent-secondary-hover: #1e3490;
+  --border: #E2E8F0;
+  --border-focus: #1098F7;
+  --color-gain: #059669;
+  --color-gain-bg: rgba(5, 150, 105, 0.1);
+  --color-loss: #DC2626;
+  --color-loss-bg: rgba(220, 38, 38, 0.1);
+  --color-value: #1098F7;
+  --color-investi: #2945A8;
+  --color-acquis: #F59E0B;
+  --input-bg: #FFFFFF;
+  --input-border: #D1D5DB;
+  --card-shadow: 0 2px 12px rgba(0, 23, 63, 0.08);
+  --tooltip-bg: #1a3470;
+  --disclaimer-bg: rgba(16, 152, 247, 0.06);
+  --disclaimer-border: rgba(16, 152, 247, 0.25);
+}

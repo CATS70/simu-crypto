@@ -1,1 +1,29 @@
+# Dépendances
+node_modules/
+
+# Build Next.js
+.next/
+out/
+
+# Fichiers de cache
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Variables d'environnement (secrets)
+.env
+.env.local
+.env.*.local
+
+# Répertoire de travail Claude (non destiné au repo)
+.claude/
+
+# Projet interne (brief, captures, suivi)
 docproj/
+SPEC.md
+spec.md
+spec-final.md
+screens-final.md
+
+# OS
+.DS_Store
+Thumbs.db

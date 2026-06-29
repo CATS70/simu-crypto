@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import '../themes/dark.css';
+@import '../themes/light.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar (dark theme) */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* ── Layout responsive ─────────────────────────────────────────────────────── */
+
+/* Conteneur de référence pour les container queries.
+   container-type: inline-size expose la largeur du conteneur aux enfants,
+   indépendamment de la taille de la fenêtre (fonctionne aussi dans /embed). */
+.simulateur-container {
+  container-type: inline-size;
+}
+
+/* Layout principal : 2 colonnes desktop, 1 colonne quand l'espace est insuffisant */
+.simulateur-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Grille dates (Depuis / Jusqu'au) */
+.dates-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Breakpoint à 800px : en dessous, le layout et la grille dates s'empilent.
+   Répond à la largeur du conteneur, pas de la fenêtre → fonctionne en iframe,
+   en paysage mobile et dans tout contexte d'intégration. */
+@container (max-width: 800px) {
+  .simulateur-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dates-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Le header titre est hors du container — media query viewport classique */
+@media (max-width: 800px) {
+  .page-header-title h1 {
+    font-size: 20px;
+    white-space: normal;
+  }
+
+  .page-header-title svg {
+    display: none;
+  }
+}
+
+/* ── Utility ───────────────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Démo intégration iframe — Simulateur Crypto</title>
+  <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.9/js/iframeResizer.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f5f5f5;
+      padding: 32px 24px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1a1a2e;
+    }
+    p {
+      color: #555;
+      margin-bottom: 32px;
+      font-size: 14px;
+    }
+    .iframes-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .iframe-wrapper {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    .iframe-label {
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: #f0f0f0;
+      color: #666;
+      border-bottom: 1px solid #ddd;
+    }
+    iframe {
+      width: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Démo intégration iframe</h1>
+  <p>Deux instances du simulateur côte à côte, en thèmes dark et light.</p>
+  <div class="iframes-row">
+    <div class="iframe-wrapper">
+      <div class="iframe-label">Thème Dark</div>
+      <iframe
+        id="iframe-dark"
+        src="/embed?theme=dark"
+        scrolling="no"
+        title="Simulateur Crypto — Thème Dark"
+      ></iframe>
+    </div>
+    <div class="iframe-wrapper">
+      <div class="iframe-label">Thème Light</div>
+      <iframe
+        id="iframe-light"
+        src="/embed?theme=light"
+        scrolling="no"
+        title="Simulateur Crypto — Thème Light"
+      ></iframe>
+    </div>
+  </div>
+
+  <script>
+    iFrameResize({ log: false, checkOrigin: false }, '#iframe-dark')
+    iFrameResize({ log: false, checkOrigin: false }, '#iframe-light')
+  </script>
+</body>
+</html>
