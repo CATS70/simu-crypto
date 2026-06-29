@@ -31,7 +31,7 @@ async function ShareContent({ params }: SharePageProps) {
   }
 
   return (
-    <div data-theme="dark" style={{ minHeight: '100vh', background: 'var(--bg)', padding: '32px 24px' }}>
+    <div style={{ minHeight: '100dvh', background: 'var(--bg)', padding: '32px 24px' }}>
       <header style={{ maxWidth: '1200px', margin: '0 auto 24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
         <div>
           <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.02em' }}>
@@ -65,7 +65,7 @@ async function ShareContent({ params }: SharePageProps) {
 
 export default function SharePage(props: SharePageProps) {
   return (
-    <Suspense fallback={<div data-theme="dark" style={{ minHeight: '100vh', background: 'var(--bg)' }} />}>
+    <Suspense fallback={<div style={{ minHeight: '100dvh', background: 'var(--bg)' }} />}>
       <ShareContent params={props.params} />
     </Suspense>
   )

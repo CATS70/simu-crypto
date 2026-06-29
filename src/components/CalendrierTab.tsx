@@ -96,6 +96,7 @@ const tdStyle: React.CSSProperties = {
   textAlign: 'right',
   borderBottom: '1px solid var(--border)',
   whiteSpace: 'nowrap',
+  color: 'var(--text)',
 }
 
 const trStyle: React.CSSProperties = {

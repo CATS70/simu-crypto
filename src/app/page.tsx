@@ -2,7 +2,7 @@ import { Simulateur } from '@/components/Simulateur'
 
 export default function HomePage() {
   return (
-    <div data-theme="dark" style={{ minHeight: '100vh', background: 'var(--bg)', padding: '48px 24px 32px' }}>
+    <div style={{ minHeight: '100dvh', background: 'var(--bg)', padding: '48px 24px 32px' }}>
 
       {/* Header centré — gabarit S'investir */}
       <header style={{ maxWidth: '720px', margin: '0 auto 48px', textAlign: 'center' }}>
