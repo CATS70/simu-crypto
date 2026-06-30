@@ -4,6 +4,7 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Simulateur Crypto — S\'investir',
   description: 'Simulez vos investissements en cryptomonnaies en DCA sur des données historiques réelles.',
+  icons: { icon: '/favicon.svg' },
 }
 
 export const viewport: Viewport = {
