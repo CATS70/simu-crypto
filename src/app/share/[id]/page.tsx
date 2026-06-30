@@ -42,7 +42,7 @@ async function ShareContent({ params }: SharePageProps) {
           </p>
         </div>
         <Link
-          href="/"
+          href={`/?actif=${simulationParams.actif}&montant=${simulationParams.montant}&frequence=${simulationParams.frequence}&dateDebut=${simulationParams.dateDebut}&dateFin=${simulationParams.dateFin}`}
           style={{
             marginLeft: 'auto', padding: '9px 18px',
             background: 'var(--surface)', border: '1px solid var(--border)',
