@@ -1,6 +1,60 @@
+import { Suspense } from 'react'
 import { Simulateur } from '@/components/Simulateur'
+import { SimulationParamsSchema } from '@/lib/validation'
+import { runSimulation } from '@/lib/dca'
+import { fetchHistoricalPrices } from '@/lib/coingecko'
+import type { SimulationParams, SimulationResult } from '@/types/simulation'
 
-export default function HomePage() {
+interface HomePageProps {
+  readonly searchParams: Promise<{
+    actif?: string
+    montant?: string
+    frequence?: string
+    dateDebut?: string
+    dateFin?: string
+  }>
+}
+
+async function HomeContent({ searchParams }: HomePageProps) {
+  const params = await searchParams
+
+  let initialParams: SimulationParams | undefined = undefined
+  let initialResult: SimulationResult | null = null
+
+  if (params.actif) {
+    const raw = {
+      actif: params.actif,
+      montant: params.montant ? Number.parseFloat(params.montant) : undefined,
+      frequence: params.frequence,
+      dateDebut: params.dateDebut,
+      dateFin: params.dateFin,
+    }
+
+    const parsed = SimulationParamsSchema.safeParse(raw)
+    if (parsed.success) {
+      initialParams = parsed.data as SimulationParams
+      try {
+        const prices = await fetchHistoricalPrices(
+          initialParams.actif,
+          initialParams.dateDebut,
+          initialParams.dateFin,
+        )
+        initialResult = runSimulation(initialParams, prices)
+      } catch {
+        // En cas d'erreur de calcul, on affiche uniquement le formulaire pré-rempli
+      }
+    }
+  }
+
+  return (
+    <Simulateur
+      {...(initialParams ? { initialParams } : {})}
+      {...(initialResult ? { initialResult } : {})}
+    />
+  )
+}
+
+export default function HomePage(props: HomePageProps) {
   return (
     <div style={{ minHeight: '100dvh', background: 'var(--bg)', padding: '48px 24px 32px' }}>
 
@@ -104,7 +158,9 @@ export default function HomePage() {
       </header>
 
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <Simulateur />
+        <Suspense fallback={null}>
+          <HomeContent searchParams={props.searchParams} />
+        </Suspense>
       </div>
     </div>
   )

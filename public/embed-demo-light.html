@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulateurs — S'investir</title>
+  <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.9/js/iframeResizer.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:              #F0F4FA;
+      --surface:         #FFFFFF;
+      --surface-elevated:#FFFFFF;
+      --border:          #E2E8F0;
+      --text:            #00173F;
+      --text-muted:      #6B7280;
+      --accent:          #1098F7;
+      --accent-hover:    #0284e0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    header {
+      background: var(--surface-elevated);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,23,63,0.06);
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .logo span { color: var(--accent); }
+
+    nav {
+      display: flex;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    nav a {
+      padding: 7px 14px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+
+    nav a:hover { background: var(--border); color: var(--text); }
+    nav a.active { color: var(--accent); background: rgba(16,152,247,0.1); }
+
+    .nav-cta {
+      background: var(--accent) !important;
+      color: #fff !important;
+      font-weight: 600 !important;
+    }
+
+    .nav-cta:hover { background: var(--accent-hover) !important; }
+
+    /* ── Layout principal ────────────────────────────── */
+    .page-body {
+      display: flex;
+      flex: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 28px 24px;
+      gap: 0;
+    }
+
+    /* ── Sidebar gauche ──────────────────────────────── */
+    aside {
+      width: 220px;
+      flex-shrink: 0;
+      padding-right: 24px;
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar-section { margin-bottom: 28px; }
+
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      padding: 0 10px;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.15s;
+      cursor: pointer;
+    }
+
+    .sidebar-link:hover { background: var(--border); color: var(--text); }
+
+    .sidebar-link.active {
+      background: rgba(16,152,247,0.12);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sidebar-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+
+    .sidebar-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 99px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Contenu principal ───────────────────────────── */
+    main {
+      flex: 1;
+      min-width: 0;
+      padding-left: 32px;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { color: var(--text); font-weight: 500; }
+
+    /* Iframe sans enveloppe — intégration seamless */
+    iframe {
+      width: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ── Footer ──────────────────────────────────────── */
+    footer {
+      background: var(--surface-elevated);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    footer a { color: var(--text-muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    .footer-links { display: flex; gap: 24px; }
+
+    /* ── Responsive ──────────────────────────────────── */
+    @media (max-width: 768px) {
+      aside { display: none; }
+      .page-body { padding: 16px; }
+      main { padding-left: 0; }
+      nav a:not(.nav-cta) { display: none; }
+      header { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="logo">S<span>'</span>investir</a>
+    <nav>
+      <a href="#">Formation</a>
+      <a href="#">Communauté</a>
+      <a href="#" class="active">Simulateurs</a>
+      <a href="#">Blog</a>
+      <a href="#" class="nav-cta">Commencer →</a>
+    </nav>
+  </header>
+
+  <div class="page-body">
+
+    <aside>
+      <div class="sidebar-section">
+        <p class="sidebar-label">Simulateurs</p>
+        <a href="#" class="sidebar-link active">
+          <span class="sidebar-icon">₿</span>
+          Crypto DCA
+          <span class="sidebar-badge">NEW</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">📈</span>
+          Intérêts composés
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">💸</span>
+          Impact des frais
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🏠</span>
+          Immobilier
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">📉</span>
+          Inflation
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">Mon espace</p>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">🔖</span>
+          Mes simulations
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="sidebar-icon">⚙️</span>
+          Paramètres
+        </a>
+      </div>
+    </aside>
+
+    <main>
+      <div class="breadcrumb">
+        <a href="#">Accueil</a> ›
+        <a href="#">Simulateurs</a> ›
+        <span>Crypto DCA</span>
+      </div>
+
+      <iframe
+        id="embed-simulateur-light"
+        src="/embed?theme=light"
+        title="Simulateur Crypto DCA"
+      ></iframe>
+    </main>
+
+  </div>
+
+  <footer>
+    <span>© 2025 S'investir — Les informations fournies sont à titre pédagogique uniquement.</span>
+    <div class="footer-links">
+      <a href="#">Mentions légales</a>
+      <a href="#">Politique de confidentialité</a>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    iFrameResize({ log: false, checkOrigin: false }, '#embed-simulateur-light')
+  </script>
+
+</body>
+</html>

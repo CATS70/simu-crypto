@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { isValidTheme } from '@/lib/config'
 import { Simulateur } from '@/components/Simulateur'
 import { IframeResizer } from '@/components/IframeResizer'
+import { ThemeApplier } from '@/components/ThemeApplier'
 
 interface EmbedPageProps {
   readonly searchParams: Promise<{ theme?: string }>
@@ -12,10 +13,13 @@ async function EmbedContent({ searchParams }: EmbedPageProps) {
   const theme = rawTheme && isValidTheme(rawTheme) ? rawTheme : 'dark'
 
   return (
-    <div data-theme={theme} style={{ background: 'var(--bg)', padding: '16px' }}>
-      <Simulateur />
-      <IframeResizer />
-    </div>
+    <>
+      <ThemeApplier theme={theme} />
+      <div style={{ padding: '16px' }}>
+        <Simulateur />
+        <IframeResizer />
+      </div>
+    </>
   )
 }
 
