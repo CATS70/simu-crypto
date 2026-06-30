@@ -99,11 +99,15 @@ export function Simulateur({ initialParams, initialResult }: SimulateurProps) {
 
               {/* Onglets */}
               <section className={styles.tabSection}>
-                <div className={styles.tabBar}>
+                <div role="tablist" aria-label="Vues de résultats" className={styles.tabBar}>
                   {(['graphiques', 'calendrier'] as Tab[]).map((t) => (
                     <button
                       key={t}
+                      role="tab"
                       type="button"
+                      id={`tab-${t}`}
+                      aria-selected={tab === t}
+                      aria-controls={`panel-${t}`}
                       onClick={() => setTab(t)}
                       className={`${styles.tab} ${tab === t ? styles.tabActive : ''}`}
                     >
@@ -111,11 +115,17 @@ export function Simulateur({ initialParams, initialResult }: SimulateurProps) {
                     </button>
                   ))}
                 </div>
-                {tab === 'graphiques' ? (
-                  <ChartTabs result={result} asset={asset} />
-                ) : (
-                  <CalendrierTab entries={result.entries} asset={asset} />
-                )}
+                <div
+                  role="tabpanel"
+                  id={`panel-${tab}`}
+                  aria-labelledby={`tab-${tab}`}
+                >
+                  {tab === 'graphiques' ? (
+                    <ChartTabs result={result} asset={asset} />
+                  ) : (
+                    <CalendrierTab entries={result.entries} asset={asset} />
+                  )}
+                </div>
               </section>
 
               {/* Partage */}

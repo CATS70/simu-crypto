@@ -19,11 +19,15 @@ export function ChartTabs({ result, asset }: ChartTabsProps) {
 
   return (
     <div>
-      <div className={styles.tabBar}>
+      <div role="tablist" aria-label="Type de graphique" className={styles.tabBar}>
         {(['repartition', 'historique'] as ChartView[]).map((v) => (
           <button
             key={v}
+            role="tab"
             type="button"
+            id={`chart-tab-${v}`}
+            aria-selected={view === v}
+            aria-controls={`chart-panel-${v}`}
             onClick={() => setView(v)}
             className={`${styles.tab} ${view === v ? styles.tabActive : ''}`}
           >
@@ -32,11 +36,17 @@ export function ChartTabs({ result, asset }: ChartTabsProps) {
         ))}
       </div>
 
-      {view === 'repartition' ? (
-        <RepartitionChart data={dailySeries} />
-      ) : (
-        <HistoriqueChart data={dailySeries} symbol={asset.symbol} />
-      )}
+      <div
+        role="tabpanel"
+        id={`chart-panel-${view}`}
+        aria-labelledby={`chart-tab-${view}`}
+      >
+        {view === 'repartition' ? (
+          <RepartitionChart data={dailySeries} />
+        ) : (
+          <HistoriqueChart data={dailySeries} symbol={asset.symbol} />
+        )}
+      </div>
     </div>
   )
 }

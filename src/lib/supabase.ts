@@ -1,5 +1,6 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import config from './config'
+import { logSupabaseError } from './logger'
 import type { SimulationParams } from '@/types/simulation'
 
 // Lazy Supabase client — créé uniquement à l'appel, pas au module evaluation
@@ -30,6 +31,7 @@ export async function insertSharedSimulation(params: SimulationParams): Promise<
     .single()
 
   if (error || !data) {
+    logSupabaseError({ operation: 'insert', table: 'shared_simulations', error: error ?? 'No data returned' })
     throw new Error(error?.message ?? 'Erreur lors de la sauvegarde de la simulation.')
   }
 
@@ -44,9 +46,13 @@ export async function getSharedSimulation(id: string): Promise<SharedSimulation 
       .eq('id', id)
       .single()
 
-    if (error || !data) return null
+    if (error || !data) {
+      if (error) logSupabaseError({ operation: 'select', table: 'shared_simulations', error })
+      return null
+    }
     return data as SharedSimulation
-  } catch {
+  } catch (err) {
+    logSupabaseError({ operation: 'select', table: 'shared_simulations', error: err })
     return null
   }
 }

@@ -1,37 +1,8 @@
 import type { SimulationResult, SimulationParams } from '@/types/simulation'
 import { getAsset } from '@/lib/assets'
 import { FieldTooltip } from './ui/FieldTooltip'
+import { fmtEur, fmtPct, fmtCrypto } from '@/lib/format'
 import styles from './ResultsGrid.module.css'
-
-// Formateur manuel — garantit   comme séparateur de milliers
-// indépendamment des données ICU disponibles dans Node.js / WSL.
-function groupDigits(n: number, decimals: number): string {
-  const [intPart, decPart = ''] = n.toFixed(decimals).split('.')
-  const int = intPart!
-  const groups: string[] = []
-  for (let i = int.length; i > 0; i -= 3) {
-    groups.unshift(int.slice(Math.max(0, i - 3), i))
-  }
-  const grouped = groups.join(' ')
-  return decimals > 0 ? `${grouped},${decPart}` : grouped
-}
-
-const fmtEur = (v: number) => `${groupDigits(v, 2)} €`
-
-const fmtPct = (v: number, withSign = false) => {
-  const abs = groupDigits(Math.abs(v), 2)
-  let sign: string
-  if (v < 0) {
-    sign = '−'
-  } else if (withSign) {
-    sign = '+'
-  } else {
-    sign = ''
-  }
-  return `${sign}${abs} %`
-}
-
-const fmtCrypto = (v: number, decimals = 8) => groupDigits(v, decimals)
 
 interface ResultsGridProps {
   readonly result: SimulationResult
