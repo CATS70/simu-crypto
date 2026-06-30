@@ -2,7 +2,6 @@ import { Suspense } from 'react'
 import { isValidTheme } from '@/lib/config'
 import { Simulateur } from '@/components/Simulateur'
 import { IframeResizer } from '@/components/IframeResizer'
-import { ThemeApplier } from '@/components/ThemeApplier'
 
 interface EmbedPageProps {
   readonly searchParams: Promise<{ theme?: string }>
@@ -14,7 +13,8 @@ async function EmbedContent({ searchParams }: EmbedPageProps) {
 
   return (
     <>
-      <ThemeApplier theme={theme} />
+      {/* Applique le thème avant le paint — évite le reflow qui perturbe iframe-resizer */}
+      <script dangerouslySetInnerHTML={{ __html: `document.documentElement.dataset.theme="${theme}"` }} />
       <div style={{ padding: '16px' }}>
         <Simulateur />
         <IframeResizer />
