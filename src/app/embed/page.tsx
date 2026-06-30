@@ -12,14 +12,10 @@ async function EmbedContent({ searchParams }: EmbedPageProps) {
   const theme = rawTheme && isValidTheme(rawTheme) ? rawTheme : 'dark'
 
   return (
-    <>
-      {/* Applique le thème avant le paint — évite le reflow qui perturbe iframe-resizer */}
-      <script dangerouslySetInnerHTML={{ __html: `document.documentElement.dataset.theme="${theme}"` }} />
-      <div style={{ padding: '16px' }}>
-        <Simulateur />
-        <IframeResizer />
-      </div>
-    </>
+    <div data-theme={theme} style={{ background: 'var(--bg)', padding: '16px' }}>
+      <Simulateur />
+      <IframeResizer />
+    </div>
   )
 }
 
