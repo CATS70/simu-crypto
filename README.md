@@ -37,9 +37,34 @@ cp .env.example .env.local
 | `COINGECKO_API_KEY` | Non | Clé API CoinGecko Pro (accès plus élevé) |
 | `NEXT_PUBLIC_APP_URL` | Non | URL publique de l'app (ex: https://simu.monsite.fr) |
 
-## Supabase — table `shared_simulations`
+## Développement
 
-Créer la table via l'éditeur SQL Supabase :
+```bash
+pnpm dev
+```
+
+L'application est disponible sur http://localhost:3000.
+
+## Build production
+
+```bash
+pnpm build
+pnpm start
+```
+
+## Déploiement Vercel
+
+1. Importer le repository depuis le dashboard Vercel
+2. Renseigner les variables d'environnement dans **Settings → Environment Variables** :
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `NEXT_PUBLIC_APP_URL` (URL du projet Vercel, ex: `https://simu-crypto.vercel.app`)
+   - `COINGECKO_API_KEY` (optionnel)
+3. Déployer — Vercel détecte automatiquement Next.js, aucune configuration supplémentaire n'est requise.
+
+## Supabase — configuration
+
+Dans votre projet Supabase existant, ouvrir l'**éditeur SQL** et exécuter :
 
 ```sql
 create table shared_simulations (
@@ -57,20 +82,9 @@ create policy "anon select" on shared_simulations
   for select to anon using (true);
 ```
 
-## Développement
-
-```bash
-pnpm dev
-```
-
-L'application est disponible sur http://localhost:3000.
-
-## Build production
-
-```bash
-pnpm build
-pnpm start
-```
+Récupérer ensuite les clés dans **Settings → API** :
+- **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
+- **Publishable (anciennement "anon public")** → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ## Intégration iframe
 
@@ -87,7 +101,9 @@ Le simulateur est intégrable via iframe sur n'importe quelle page :
 Paramètres disponibles :
 - `?theme=dark` (défaut) ou `?theme=light`
 
-Une démo côte à côte est disponible sur `/embed-demo.html`.
+Pages de démonstration :
+- `/embed-demo.html` — thème sombre
+- `/embed-demo-light.html` — thème clair
 
 ## Fonctionnalités
 
