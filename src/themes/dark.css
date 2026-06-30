@@ -3,7 +3,6 @@
    --color-surface-soft:     rgb(15,23,42)  = #0F172A  → cartes
    --color-surface-elevated: rgb(0,23,63)   = #00173F  → éléments surélevés
 */
-:root,
 [data-theme="dark"] {
   --bg: #080C16;
   --surface: #0F172A;
