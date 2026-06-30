@@ -1,6 +1,7 @@
 import type { SimulationResult, SimulationParams } from '@/types/simulation'
 import { getAsset } from '@/lib/assets'
 import { FieldTooltip } from './ui/FieldTooltip'
+import styles from './ResultsGrid.module.css'
 
 // Formateur manuel — garantit   comme séparateur de milliers
 // indépendamment des données ICU disponibles dans Node.js / WSL.
@@ -39,8 +40,8 @@ interface ResultsGridProps {
 
 const KPI_INFO: Record<string, string> = {
   investi:  'Total des sommes versées sur la période, hors frais éventuels.',
-  acquis:   'Quantité totale de l\'actif accumulée grâce aux achats périodiques.',
-  prix:     'Coût moyen pondéré d\'achat : capital investi ÷ quantité acquise.',
+  acquis:   "Quantité totale de l'actif accumulée grâce aux achats périodiques.",
+  prix:     "Coût moyen pondéré d'achat : capital investi ÷ quantité acquise.",
   capital:  'Valeur actuelle de votre portefeuille au prix de clôture de la dernière séance.',
   perf:     'Rendement net sur le capital investi : (Capital final − Investi) ÷ Investi × 100.',
 }
@@ -54,8 +55,8 @@ export function ResultsGrid({ result, params }: ResultsGridProps) {
 
   return (
     <div>
-      <h3 style={sectionHeaderStyle}>Chiffres clés</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+      <h3 className={styles.sectionHeader}>Chiffres clés</h3>
+      <div className={styles.grid}>
 
         <KpiCard
           label="Investi"
@@ -86,7 +87,7 @@ export function ResultsGrid({ result, params }: ResultsGridProps) {
           color="var(--accent-primary)"
         />
 
-        <div style={{ gridColumn: '1 / -1' }}>
+        <div className={styles.gridFull}>
           <KpiCard
             label="Performance"
             info={KPI_INFO['perf']!}
@@ -122,45 +123,20 @@ interface KpiCardProps {
 
 function KpiCard({ label, info, value, subtitle, color, large = false }: KpiCardProps) {
   return (
-    <div style={cardStyle}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '6px' }}>
-        <p style={labelStyle}>{label}</p>
+    <div className={styles.card}>
+      <div className={styles.cardLabelRow}>
+        <p className={styles.cardLabel}>{label}</p>
         <FieldTooltip content={info} icon="i" position="top" />
       </div>
-      <p style={{ fontSize: large ? '30px' : '22px', fontWeight: 700, color, lineHeight: 1.2 }}>
+      <p
+        className={`${styles.cardValue} ${large ? styles.cardValueLarge : ''}`}
+        style={{ color }}
+      >
         {value}
       </p>
       {subtitle && (
-        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>{subtitle}</p>
+        <p className={styles.cardSubtitle}>{subtitle}</p>
       )}
     </div>
   )
-}
-
-const sectionHeaderStyle: React.CSSProperties = {
-  fontSize: '13px',
-  fontWeight: 700,
-  textTransform: 'uppercase',
-  letterSpacing: '0.08em',
-  color: 'var(--header-chiffres)',
-  marginBottom: '12px',
-  paddingBottom: '8px',
-  borderBottom: '2px solid var(--header-chiffres)',
-}
-
-const cardStyle: React.CSSProperties = {
-  background: 'var(--surface)',
-  border: '1px solid var(--border)',
-  borderRadius: '12px',
-  padding: '16px 20px',
-  boxShadow: 'var(--card-shadow)',
-}
-
-const labelStyle: React.CSSProperties = {
-  fontSize: '11px',
-  fontWeight: 600,
-  textTransform: 'uppercase',
-  letterSpacing: '0.08em',
-  color: 'var(--text-muted)',
-  margin: 0,
 }

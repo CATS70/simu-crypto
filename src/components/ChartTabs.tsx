@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { RepartitionChart } from './charts/RepartitionChart'
 import { HistoriqueChart } from './charts/HistoriqueChart'
 import type { SimulationResult, CuratedAsset } from '@/types/simulation'
+import styles from './ChartTabs.module.css'
 
 interface ChartTabsProps {
   readonly result: SimulationResult
@@ -18,24 +19,13 @@ export function ChartTabs({ result, asset }: ChartTabsProps) {
 
   return (
     <div>
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+      <div className={styles.tabBar}>
         {(['repartition', 'historique'] as ChartView[]).map((v) => (
           <button
             key={v}
             type="button"
             onClick={() => setView(v)}
-            style={{
-              padding: '8px 18px',
-              borderRadius: '8px',
-              border: '1px solid var(--border)',
-              background: view === v ? 'var(--accent-primary)' : 'var(--surface)',
-              color: view === v ? 'var(--text-inverse)' : 'var(--text)',
-              fontWeight: 500,
-              fontSize: '13px',
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-              transition: 'all 0.15s',
-            }}
+            className={`${styles.tab} ${view === v ? styles.tabActive : ''}`}
           >
             {v === 'repartition' ? 'Gains / Pertes' : 'Historique'}
           </button>

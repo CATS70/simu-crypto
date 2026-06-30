@@ -8,6 +8,7 @@ import { CalendrierTab } from './CalendrierTab'
 import { SharePanel } from './SharePanel'
 import { getAsset } from '@/lib/assets'
 import type { SimulationParams, SimulationResult } from '@/types/simulation'
+import styles from './Simulateur.module.css'
 
 type Tab = 'graphiques' | 'calendrier'
 
@@ -61,149 +62,91 @@ export function Simulateur({ initialParams, initialResult }: SimulateurProps) {
 
   return (
     <div className="simulateur-container">
-    <div className="simulateur-layout">
-      {/* Colonne gauche — formulaire */}
-      <aside>
-        <div
-          style={{
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            borderRadius: '16px',
-            padding: '28px',
-            boxShadow: 'var(--card-shadow)',
-          }}
-        >
-          <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '24px', color: 'var(--text)' }}>
-            Paramètres
-          </h2>
-          <SimulateurForm
-            {...(params ? { initialParams: params } : {})}
-            onSubmit={handleSubmit}
-            loading={loading}
-          />
-        </div>
-      </aside>
-
-      {/* Colonne droite — résultats */}
-      <main>
-        {error && (
-          <div
-            style={{
-              background: 'rgba(239,68,68,0.1)', border: '1px solid var(--color-loss)',
-              borderRadius: '12px', padding: '16px',
-              color: 'var(--color-loss)', marginBottom: '24px', fontSize: '14px',
-            }}
-            role="alert"
-          >
-            {error}
+      <div className="simulateur-layout">
+        {/* Colonne gauche — formulaire */}
+        <aside>
+          <div className={styles.formPanel}>
+            <h2 className={styles.formTitle}>Paramètres</h2>
+            <SimulateurForm
+              {...(params ? { initialParams: params } : {})}
+              onSubmit={handleSubmit}
+              loading={loading}
+            />
           </div>
-        )}
+        </aside>
 
-        {result && params && asset && (
-          <div ref={resultsRef}>
-            {/* Warnings */}
-            {result.warnings && result.warnings.length > 0 && (
-              <div
-                style={{
-                  background: 'rgba(239,209,88,0.1)', border: '1px solid var(--accent-primary)',
-                  borderRadius: '12px', padding: '14px 16px',
-                  color: 'var(--text)', marginBottom: '20px', fontSize: '13px',
-                }}
-              >
-                {result.warnings.map((w) => <p key={w}>{w}</p>)}
-              </div>
-            )}
-
-            {/* KPIs */}
-            <section
-              style={{
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderRadius: '16px',
-                padding: '28px',
-                boxShadow: 'var(--card-shadow)',
-                marginBottom: '28px',
-              }}
-            >
-              <ResultsGrid result={result} params={params} />
-            </section>
-
-            {/* Onglets */}
-            <section
-              style={{
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderRadius: '16px',
-                padding: '24px',
-                boxShadow: 'var(--card-shadow)',
-                marginBottom: '20px',
-              }}
-            >
-              <div style={{ display: 'flex', gap: '4px', marginBottom: '24px' }}>
-                {(['graphiques', 'calendrier'] as Tab[]).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => setTab(t)}
-                    style={{
-                      padding: '8px 18px', borderRadius: '8px', border: 'none',
-                      background: tab === t ? 'var(--accent-secondary)' : 'transparent',
-                      color: tab === t ? '#fff' : 'var(--text-muted)',
-                      fontWeight: tab === t ? 600 : 400,
-                      fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.15s',
-                    }}
-                  >
-                    {t === 'graphiques' ? 'Graphiques' : 'Calendrier'}
-                  </button>
-                ))}
-              </div>
-              {tab === 'graphiques' ? (
-                <ChartTabs result={result} asset={asset} />
-              ) : (
-                <CalendrierTab entries={result.entries} asset={asset} />
-              )}
-            </section>
-
-            {/* Partage */}
-            <div>
-              {!showShare ? (
-                <button
-                  type="button"
-                  onClick={() => setShowShare(true)}
-                  style={{
-                    width: '100%', padding: '12px',
-                    background: 'var(--surface)', border: '1px solid var(--border)',
-                    borderRadius: '10px', color: 'var(--text)',
-                    fontSize: '14px', fontWeight: 500,
-                    cursor: 'pointer', fontFamily: 'inherit',
-                  }}
-                >
-                  Partager cette simulation
-                </button>
-              ) : (
-                <SharePanel
-                  params={params}
-                  resultsRef={resultsRef}
-                  onClose={() => setShowShare(false)}
-                />
-              )}
+        {/* Colonne droite — résultats */}
+        <main>
+          {error && (
+            <div className={styles.errorBanner} role="alert">
+              {error}
             </div>
-          </div>
-        )}
+          )}
 
-        {!result && !loading && !error && (
-          <div
-            style={{
-              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              minHeight: '300px', color: 'var(--text-muted)', textAlign: 'center',
-            }}
-          >
-            <p style={{ fontSize: '48px', marginBottom: '16px' }}>📈</p>
-            <p style={{ fontSize: '16px' }}>Configurez votre simulation et cliquez sur <strong>Simuler</strong></p>
-          </div>
-        )}
-      </main>
-    </div>
+          {result && params && asset && (
+            <div ref={resultsRef}>
+              {/* Warnings */}
+              {result.warnings && result.warnings.length > 0 && (
+                <div className={styles.warningBanner}>
+                  {result.warnings.map((w) => <p key={w}>{w}</p>)}
+                </div>
+              )}
+
+              {/* KPIs */}
+              <section className={styles.kpiSection}>
+                <ResultsGrid result={result} params={params} />
+              </section>
+
+              {/* Onglets */}
+              <section className={styles.tabSection}>
+                <div className={styles.tabBar}>
+                  {(['graphiques', 'calendrier'] as Tab[]).map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setTab(t)}
+                      className={`${styles.tab} ${tab === t ? styles.tabActive : ''}`}
+                    >
+                      {t === 'graphiques' ? 'Graphiques' : 'Calendrier'}
+                    </button>
+                  ))}
+                </div>
+                {tab === 'graphiques' ? (
+                  <ChartTabs result={result} asset={asset} />
+                ) : (
+                  <CalendrierTab entries={result.entries} asset={asset} />
+                )}
+              </section>
+
+              {/* Partage */}
+              <div>
+                {!showShare ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowShare(true)}
+                    className={styles.shareBtn}
+                  >
+                    Partager cette simulation
+                  </button>
+                ) : (
+                  <SharePanel
+                    params={params}
+                    resultsRef={resultsRef}
+                    onClose={() => setShowShare(false)}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          {!result && !loading && !error && (
+            <div className={styles.emptyState}>
+              <p className={styles.emptyStateIcon}>📈</p>
+              <p>Configurez votre simulation et cliquez sur <strong>Simuler</strong></p>
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   )
 }

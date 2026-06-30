@@ -1,6 +1,7 @@
 'use client'
 
 import type { SimulationEntry, CuratedAsset } from '@/types/simulation'
+import styles from './CalendrierTab.module.css'
 
 const fmt = (v: number, decimals = 2) =>
   new Intl.NumberFormat('fr-FR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(v)
@@ -45,30 +46,30 @@ export function CalendrierTab({ entries, asset }: CalendrierTabProps) {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-        <button type="button" onClick={handleExportCSV} style={exportBtnStyle}>
+      <div className={styles.toolbar}>
+        <button type="button" onClick={handleExportCSV} className={styles.exportBtn}>
           ↓ Exporter CSV
         </button>
       </div>
-      <div style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
           <thead>
-            <tr style={{ borderBottom: '1px solid var(--border)' }}>
+            <tr>
               {['Date', 'Investi', `Qté (${asset.symbol})`, 'Cumul investi', `Cumul (${asset.symbol})`, 'Prix', 'Valeur'].map((h) => (
-                <th key={h} style={thStyle}>{h}</th>
+                <th key={h} className={styles.th}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {entries.map((entry) => (
-              <tr key={entry.date + entry.montantInvestiCumule} style={trStyle}>
-                <td style={tdStyle}>{entry.date}</td>
-                <td style={tdStyle}>{fmtEur(entry.montantInvesti)}</td>
-                <td style={tdStyle}>{fmt(entry.quantiteAcquise, 8)}</td>
-                <td style={tdStyle}>{fmtEur(entry.montantInvestiCumule)}</td>
-                <td style={tdStyle}>{fmt(entry.quantiteAcquiseCumulee, 8)}</td>
-                <td style={tdStyle}>{fmtEur(entry.prixDuJour)}</td>
-                <td style={{ ...tdStyle, color: entry.valeurCumulee >= entry.montantInvestiCumule ? 'var(--color-gain)' : 'var(--color-loss)' }}>
+              <tr key={entry.date + entry.montantInvestiCumule} className={styles.tr}>
+                <td className={styles.td}>{entry.date}</td>
+                <td className={styles.td}>{fmtEur(entry.montantInvesti)}</td>
+                <td className={styles.td}>{fmt(entry.quantiteAcquise, 8)}</td>
+                <td className={styles.td}>{fmtEur(entry.montantInvestiCumule)}</td>
+                <td className={styles.td}>{fmt(entry.quantiteAcquiseCumulee, 8)}</td>
+                <td className={styles.td}>{fmtEur(entry.prixDuJour)}</td>
+                <td className={`${styles.td} ${entry.valeurCumulee >= entry.montantInvestiCumule ? styles.tdGain : styles.tdLoss}`}>
                   {fmtEur(entry.valeurCumulee)}
                 </td>
               </tr>
@@ -78,39 +79,4 @@ export function CalendrierTab({ entries, asset }: CalendrierTabProps) {
       </div>
     </div>
   )
-}
-
-const thStyle: React.CSSProperties = {
-  padding: '10px 12px',
-  textAlign: 'right',
-  fontWeight: 600,
-  color: 'var(--text-muted)',
-  fontSize: '11px',
-  textTransform: 'uppercase',
-  letterSpacing: '0.05em',
-  whiteSpace: 'nowrap',
-}
-
-const tdStyle: React.CSSProperties = {
-  padding: '10px 12px',
-  textAlign: 'right',
-  borderBottom: '1px solid var(--border)',
-  whiteSpace: 'nowrap',
-  color: 'var(--text)',
-}
-
-const trStyle: React.CSSProperties = {
-  transition: 'background 0.15s',
-}
-
-const exportBtnStyle: React.CSSProperties = {
-  padding: '8px 16px',
-  background: 'var(--surface-elevated)',
-  border: '1px solid var(--border)',
-  borderRadius: '8px',
-  color: 'var(--text)',
-  fontSize: '13px',
-  fontWeight: 500,
-  cursor: 'pointer',
-  fontFamily: 'inherit',
 }

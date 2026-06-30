@@ -5,6 +5,7 @@ import { FieldTooltip } from './ui/FieldTooltip'
 import { CURATED_ASSETS } from '@/lib/assets'
 import { SimulationParamsSchema } from '@/lib/validation'
 import type { SimulationParams } from '@/types/simulation'
+import styles from './SimulateurForm.module.css'
 
 const today = new Date().toISOString().split('T')[0] as string
 // Plan Demo CoinGecko : 365 jours max — on prend 364 pour avoir de la marge
@@ -45,7 +46,7 @@ export function SimulateurForm({ initialParams, onSubmit, loading }: SimulateurF
 
     const raw = {
       actif,
-      montant: parseFloat(montant),
+      montant: Number.parseFloat(montant),
       frequence,
       dateDebut,
       dateFin,
@@ -68,27 +69,27 @@ export function SimulateurForm({ initialParams, onSubmit, loading }: SimulateurF
 
   return (
     <form onSubmit={handleSubmit} noValidate>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div className={styles.formLayout}>
 
         {/* Actif */}
         <div>
-          <label htmlFor="actif" style={labelStyle}>
+          <label htmlFor="actif" className={styles.label}>
             Actif numérique
             <FieldTooltip content="Choisissez la cryptomonnaie sur laquelle baser la simulation." />
           </label>
-          <select id="actif" value={actif} onChange={(e) => setActif(e.target.value)} style={inputStyle}>
+          <select id="actif" value={actif} onChange={(e) => setActif(e.target.value)} className={styles.input}>
             {CURATED_ASSETS.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.name} ({a.symbol})
               </option>
             ))}
           </select>
-          {errors['actif'] && <p style={errorStyle}>{errors['actif']}</p>}
+          {errors['actif'] && <p className={styles.error}>{errors['actif']}</p>}
         </div>
 
         {/* Montant */}
         <div>
-          <label htmlFor="montant" style={labelStyle}>
+          <label htmlFor="montant" className={styles.label}>
             Montant (€)
             <FieldTooltip content="Montant investi à chaque échéance." />
           </label>
@@ -100,14 +101,14 @@ export function SimulateurForm({ initialParams, onSubmit, loading }: SimulateurF
             value={montant}
             onChange={(e) => setMontant(e.target.value)}
             placeholder="100"
-            style={inputStyle}
+            className={styles.input}
           />
-          {errors['montant'] && <p style={errorStyle}>{errors['montant']}</p>}
+          {errors['montant'] && <p className={styles.error}>{errors['montant']}</p>}
         </div>
 
         {/* Fréquence */}
         <div>
-          <label htmlFor="frequence" style={labelStyle}>
+          <label htmlFor="frequence" className={styles.label}>
             Fréquence
             <FieldTooltip content="À quel rythme investissez-vous ce montant ?" />
           </label>
@@ -115,19 +116,19 @@ export function SimulateurForm({ initialParams, onSubmit, loading }: SimulateurF
             id="frequence"
             value={frequence}
             onChange={(e) => setFrequence(e.target.value as typeof frequence)}
-            style={inputStyle}
+            className={styles.input}
           >
             <option value="quotidienne">Quotidienne</option>
             <option value="hebdomadaire">Hebdomadaire</option>
             <option value="mensuelle">Mensuelle</option>
           </select>
-          {errors['frequence'] && <p style={errorStyle}>{errors['frequence']}</p>}
+          {errors['frequence'] && <p className={styles.error}>{errors['frequence']}</p>}
         </div>
 
         {/* Dates */}
         <div className="dates-grid">
           <div>
-            <label htmlFor="dateDebut" style={labelStyle}>
+            <label htmlFor="dateDebut" className={styles.label}>
               Depuis
               <FieldTooltip content="Date de début de la simulation (données historiques uniquement)." />
             </label>
@@ -137,12 +138,12 @@ export function SimulateurForm({ initialParams, onSubmit, loading }: SimulateurF
               value={dateDebut}
               max={today}
               onChange={(e) => setDateDebut(e.target.value)}
-              style={inputStyle}
+              className={styles.input}
             />
-            {errors['dateDebut'] && <p style={errorStyle}>{errors['dateDebut']}</p>}
+            {errors['dateDebut'] && <p className={styles.error}>{errors['dateDebut']}</p>}
           </div>
           <div>
-            <label htmlFor="dateFin" style={labelStyle}>
+            <label htmlFor="dateFin" className={styles.label}>
               Jusqu'au
               <FieldTooltip content="Date de fin de la simulation." />
             </label>
@@ -152,68 +153,22 @@ export function SimulateurForm({ initialParams, onSubmit, loading }: SimulateurF
               value={dateFin}
               max={today}
               onChange={(e) => setDateFin(e.target.value)}
-              style={inputStyle}
+              className={styles.input}
             />
-            {errors['dateFin'] && <p style={errorStyle}>{errors['dateFin']}</p>}
+            {errors['dateFin'] && <p className={styles.error}>{errors['dateFin']}</p>}
           </div>
         </div>
 
         {/* Actions */}
-        <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              flex: 1, padding: '12px',
-              background: loading ? 'var(--surface-elevated)' : 'var(--accent-primary)',
-              border: 'none', borderRadius: '10px',
-              color: 'var(--text-inverse)', fontWeight: 700,
-              fontSize: '15px', cursor: loading ? 'not-allowed' : 'pointer',
-              fontFamily: 'inherit', transition: 'opacity 0.15s',
-              opacity: loading ? 0.7 : 1,
-            }}
-          >
+        <div className={styles.actions}>
+          <button type="submit" disabled={loading} className={styles.btnSubmit}>
             {loading ? 'Calcul…' : 'Simuler'}
           </button>
-          <button
-            type="button"
-            onClick={handleReset}
-            style={{
-              padding: '12px 18px',
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: '10px',
-              color: 'var(--text-muted)',
-              fontSize: '14px',
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-            }}
-          >
+          <button type="button" onClick={handleReset} className={styles.btnReset}>
             Nouvelle simulation
           </button>
         </div>
       </div>
     </form>
   )
-}
-
-const labelStyle: React.CSSProperties = {
-  display: 'flex', alignItems: 'center',
-  fontSize: '13px', fontWeight: 500,
-  color: 'var(--text-muted)', marginBottom: '6px',
-}
-
-const inputStyle: React.CSSProperties = {
-  width: '100%', padding: '10px 12px',
-  background: 'var(--input-bg)',
-  border: '1px solid var(--input-border)',
-  borderRadius: '8px',
-  color: 'var(--text)',
-  fontSize: '14px',
-  fontFamily: 'inherit',
-  outline: 'none',
-}
-
-const errorStyle: React.CSSProperties = {
-  marginTop: '4px', fontSize: '12px', color: 'var(--color-loss)',
 }

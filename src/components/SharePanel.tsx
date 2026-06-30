@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import type { SimulationParams } from '@/types/simulation'
+import styles from './SharePanel.module.css'
 
 interface SharePanelProps {
   readonly params: SimulationParams
@@ -56,7 +57,7 @@ export function SharePanel({ params, resultsRef, onClose }: SharePanelProps) {
     try {
       const { toPng } = await import('html-to-image')
       const dataUrl = await toPng(resultsRef.current, {
-        quality: 1.0,
+        quality: 1,
         pixelRatio: 2,
         backgroundColor: '#080C16',
       })
@@ -70,54 +71,45 @@ export function SharePanel({ params, resultsRef, onClose }: SharePanelProps) {
   }
 
   return (
-    <div
-      style={{
-        background: 'var(--surface)',
-        border: '1px solid var(--border)',
-        borderRadius: '12px',
-        padding: '20px',
-        marginTop: '8px',
-        boxShadow: 'var(--card-shadow)',
-      }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: 600 }}>Partager ma simulation</h3>
-        <button type="button" onClick={onClose} style={closeBtnStyle} aria-label="Fermer le panneau de partage">
+    <div className={styles.panel}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Partager ma simulation</h3>
+        <button type="button" onClick={onClose} className={styles.closeBtn} aria-label="Fermer le panneau de partage">
           ✕
         </button>
       </div>
 
       {state === 'idle' && (
-        <button type="button" onClick={generateLink} style={primaryBtnStyle}>
+        <button type="button" onClick={generateLink} className={styles.primaryBtn}>
           Générer le lien
         </button>
       )}
 
       {state === 'loading' && (
-        <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Génération du lien…</p>
+        <p className={styles.hint}>Génération du lien…</p>
       )}
 
       {state === 'error' && (
-        <p style={{ color: 'var(--color-loss)', fontSize: '14px' }}>{errorMsg}</p>
+        <p className={styles.errorMsg}>{errorMsg}</p>
       )}
 
       {state === 'done' && shareUrl && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div style={{ display: 'flex', gap: '8px' }}>
+        <div className={styles.doneLayout}>
+          <div className={styles.linkRow}>
             <input
               ref={inputRef}
               type="text"
               readOnly
               value={shareUrl}
               onFocus={(e) => e.target.select()}
-              style={linkInputStyle}
+              className={styles.linkInput}
               aria-label="Lien de partage"
             />
-            <button type="button" onClick={handleCopy} style={secondaryBtnStyle}>
+            <button type="button" onClick={handleCopy} className={styles.secondaryBtn}>
               {copied ? '✓ Copié' : 'Copier'}
             </button>
           </div>
-          <button type="button" onClick={handleDownloadImage} style={secondaryBtnStyle}>
+          <button type="button" onClick={handleDownloadImage} className={styles.secondaryBtn}>
             ↓ Télécharger l'image
           </button>
         </div>
@@ -132,28 +124,4 @@ function isShareResponse(v: unknown): v is { url: string; id: string } {
 
 function isErrorResponse(v: unknown): v is { error: string } {
   return typeof v === 'object' && v !== null && 'error' in v && typeof (v as { error: unknown }).error === 'string'
-}
-
-const closeBtnStyle: React.CSSProperties = {
-  background: 'transparent', border: 'none', cursor: 'pointer',
-  color: 'var(--text-muted)', fontSize: '16px', padding: '2px 6px', lineHeight: 1,
-}
-
-const primaryBtnStyle: React.CSSProperties = {
-  padding: '10px 20px', background: 'var(--accent-primary)', border: 'none',
-  borderRadius: '8px', color: 'var(--text-inverse)', fontWeight: 600,
-  fontSize: '14px', cursor: 'pointer', fontFamily: 'inherit', width: '100%',
-}
-
-const secondaryBtnStyle: React.CSSProperties = {
-  padding: '8px 14px', background: 'var(--surface-elevated)',
-  border: '1px solid var(--border)', borderRadius: '8px',
-  color: 'var(--text)', fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit',
-  whiteSpace: 'nowrap',
-}
-
-const linkInputStyle: React.CSSProperties = {
-  flex: 1, padding: '8px 12px', background: 'var(--input-bg)',
-  border: '1px solid var(--border)', borderRadius: '8px',
-  color: 'var(--text)', fontSize: '13px', fontFamily: 'inherit',
 }

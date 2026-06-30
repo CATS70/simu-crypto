@@ -1,0 +1,105 @@
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 8px;
+  box-shadow: var(--card-shadow);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 16px;
+  padding: 2px 6px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.closeBtn:hover {
+  color: var(--text);
+  background: var(--surface-elevated);
+}
+
+.hint {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.errorMsg {
+  color: var(--color-loss);
+  font-size: 14px;
+}
+
+.doneLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linkRow {
+  display: flex;
+  gap: 8px;
+}
+
+.linkInput {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+.primaryBtn {
+  width: 100%;
+  padding: 10px 20px;
+  background: var(--accent-primary);
+  border: none;
+  border-radius: 8px;
+  color: var(--text-inverse);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.primaryBtn:hover {
+  opacity: 0.9;
+}
+
+.secondaryBtn {
+  padding: 8px 14px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.secondaryBtn:hover {
+  background: var(--border);
+}

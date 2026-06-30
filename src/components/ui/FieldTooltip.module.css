@@ -1,0 +1,58 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+}
+
+.trigger {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-muted);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: help;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  flex-shrink: 0;
+  padding: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.trigger:hover,
+.trigger:focus-visible {
+  border-color: var(--text);
+  color: var(--text);
+}
+
+.bubble {
+  position: absolute;
+  z-index: 100;
+  background: var(--tooltip-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  width: 220px;
+  box-shadow: var(--card-shadow);
+  pointer-events: none;
+}
+
+.bubbleRight {
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bubbleTop {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}

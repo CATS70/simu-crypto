@@ -14,6 +14,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import type { DailyPoint } from '@/types/simulation'
+import styles from './Charts.module.css'
 
 // Couleurs hex explicites — html-to-image ne résout pas var(--x) dans les attributs SVG
 const C = {
@@ -49,7 +50,7 @@ export function HistoriqueChart({ data, symbol }: HistoriqueChartProps) {
   // Stack de zoom : chaque entrée = un niveau de zoom successif
   const [domainStack, setDomainStack] = useState<ZoomDomain[]>([])
 
-  const currentDomain = domainStack.length > 0 ? domainStack[domainStack.length - 1] ?? null : null
+  const currentDomain = domainStack.length > 0 ? domainStack.at(-1) ?? null : null
 
   const visibleData = currentDomain
     ? data.filter((d) => d.date >= currentDomain.start && d.date <= currentDomain.end)
@@ -58,9 +59,6 @@ export function HistoriqueChart({ data, symbol }: HistoriqueChartProps) {
   // Abscisse adaptative selon la densité visible
   const tickFormatter = (dateStr: string) => {
     const d = new Date(dateStr + 'T00:00:00Z')
-    if (visibleData.length <= 31) {
-      return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
-    }
     if (visibleData.length <= 90) {
       return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
     }
@@ -102,17 +100,17 @@ export function HistoriqueChart({ data, symbol }: HistoriqueChartProps) {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
+      <div className={styles.zoomBar}>
         <button
           type="button"
           onClick={handleZoomBack}
           disabled={domainStack.length === 0}
-          style={zoomBtnStyle(domainStack.length === 0)}
+          className={styles.zoomBtn}
         >
           − Zoom arrière
         </button>
       </div>
-      <div style={{ userSelect: 'none' }}>
+      <div className={styles.chartArea}>
         <ResponsiveContainer width="100%" height={320}>
           <ComposedChart
             data={visibleData}
@@ -229,18 +227,4 @@ export function HistoriqueChart({ data, symbol }: HistoriqueChartProps) {
       </div>
     </div>
   )
-}
-
-function zoomBtnStyle(disabled: boolean): React.CSSProperties {
-  return {
-    padding: '6px 12px',
-    background: disabled ? 'var(--surface)' : 'var(--surface-elevated)',
-    border: '1px solid var(--border)',
-    borderRadius: '6px',
-    color: disabled ? 'var(--text-muted)' : 'var(--text)',
-    fontSize: '12px',
-    cursor: disabled ? 'not-allowed' : 'pointer',
-    opacity: disabled ? 0.5 : 1,
-    fontFamily: 'inherit',
-  }
 }
