@@ -34,7 +34,7 @@ cp .env.example .env.local
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Oui (pour le partage) | URL de votre projet Supabase |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Oui (pour le partage) | Clé anonyme Supabase |
-| `COINGECKO_API_KEY` | Non | Clé API CoinGecko Pro (accès plus élevé) |
+| `COINGECKO_API_KEY` | Oui | Clé API CoinGecko (nécessaire pour les données historiques) |
 | `NEXT_PUBLIC_APP_URL` | Non | URL publique de l'app (ex: https://simu.monsite.fr) |
 
 ## Développement
@@ -59,7 +59,7 @@ pnpm start
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `NEXT_PUBLIC_APP_URL` (URL du projet Vercel, ex: `https://simu-crypto.vercel.app`)
-   - `COINGECKO_API_KEY` (optionnel)
+   - `COINGECKO_API_KEY`
 3. Déployer — Vercel détecte automatiquement Next.js, aucune configuration supplémentaire n'est requise.
 
 ## Supabase — configuration
