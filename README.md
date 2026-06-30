@@ -1,10 +1,10 @@
 # Simulateur d'investissement crypto
 
-Simulateur historique d'investissements en cryptomonnaies (DCA ou ponctuel) basé sur les données CoinGecko.
+Simulateur historique d'investissements en cryptomonnaies en DCA basé sur les données CoinGecko.
 
 ## Stack
 
-- **Next.js 16** (App Router, `"use cache"`, Server Components)
+- **Next.js 16** (App Router, PPR, Server Components)
 - **TypeScript** strict
 - **Recharts** (graphiques interactifs)
 - **Zod** (validation)
@@ -14,7 +14,7 @@ Simulateur historique d'investissements en cryptomonnaies (DCA ou ponctuel) bas�
 
 - Node.js 20.9+
 - pnpm (ou npm)
-- Compte Supabase (optionnel — uniquement pour le partage)
+- Compte Supabase
 
 ## Installation
 
@@ -32,8 +32,8 @@ cp .env.example .env.local
 
 | Variable | Requis | Description |
 |---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Oui (pour le partage) | URL de votre projet Supabase |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Oui (pour le partage) | Clé anonyme Supabase |
+| `NEXT_PUBLIC_SUPABASE_URL` | Oui | URL de votre projet Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Oui | Clé publishable Supabase |
 | `COINGECKO_API_KEY` | Oui | Clé API CoinGecko (nécessaire pour les données historiques) |
 | `NEXT_PUBLIC_APP_URL` | Non | URL publique de l'app (ex: https://simu.monsite.fr) |
 
@@ -108,7 +108,6 @@ Pages de démonstration :
 ## Fonctionnalités
 
 - **DCA** : investissement périodique (quotidien, hebdomadaire, mensuel)
-- **Ponctuel** : investissement unique
 - **20 cryptomonnaies** supportées via CoinGecko
 - **Graphiques** : Répartition (area-between) et Historique (double axe Y)
 - **Zoom** : slider interactif + historique de zooms + bouton dézoomer
