@@ -6,7 +6,12 @@ import { FieldTooltip } from './ui/FieldTooltip'
 // indépendamment des données ICU disponibles dans Node.js / WSL.
 function groupDigits(n: number, decimals: number): string {
   const [intPart, decPart = ''] = n.toFixed(decimals).split('.')
-  const grouped = intPart!.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+  const int = intPart!
+  const groups: string[] = []
+  for (let i = int.length; i > 0; i -= 3) {
+    groups.unshift(int.slice(Math.max(0, i - 3), i))
+  }
+  const grouped = groups.join(' ')
   return decimals > 0 ? `${grouped},${decPart}` : grouped
 }
 
@@ -14,7 +19,14 @@ const fmtEur = (v: number) => `${groupDigits(v, 2)} €`
 
 const fmtPct = (v: number, withSign = false) => {
   const abs = groupDigits(Math.abs(v), 2)
-  const sign = v < 0 ? '−' : withSign ? '+' : ''
+  let sign: string
+  if (v < 0) {
+    sign = '−'
+  } else if (withSign) {
+    sign = '+'
+  } else {
+    sign = ''
+  }
   return `${sign}${abs} %`
 }
 

@@ -110,7 +110,7 @@ export function Simulateur({ initialParams, initialResult }: SimulateurProps) {
                   color: 'var(--text)', marginBottom: '20px', fontSize: '13px',
                 }}
               >
-                {result.warnings.map((w, i) => <p key={i}>{w}</p>)}
+                {result.warnings.map((w) => <p key={w}>{w}</p>)}
               </div>
             )}
 

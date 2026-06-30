@@ -9,7 +9,7 @@ export function IframeResizer() {
     script.async = true
     document.body.appendChild(script)
     return () => {
-      if (document.body.contains(script)) document.body.removeChild(script)
+      if (document.body.contains(script)) script.remove()
     }
   }, [])
   return null
