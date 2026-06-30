@@ -2,9 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 import { SimulationParamsSchema } from '@/lib/validation'
 import { insertSharedSimulation } from '@/lib/supabase'
 import config from '@/lib/config'
+import { checkRateLimit, getClientIp } from '@/lib/ratelimit'
+
+const RATE_LIMIT = Number(process.env.RATE_LIMIT_SHARE ?? 10)
+const RATE_WINDOW_MS = 60_000
 
 // FR-028 — POST /api/share : persiste les params, retourne l'id
 export async function POST(request: NextRequest) {
+  const { allowed, resetMs } = checkRateLimit(getClientIp(request), RATE_LIMIT, RATE_WINDOW_MS)
+  if (!allowed) {
+    return NextResponse.json(
+      { error: 'Trop de requêtes. Veuillez patienter avant de partager à nouveau.', code: 'RATE_LIMITED' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil(resetMs / 1000)) } },
+    )
+  }
+
   let body: unknown
   try {
     body = await request.json()

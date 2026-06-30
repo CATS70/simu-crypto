@@ -2,8 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import { SimulationParamsSchema } from '@/lib/validation'
 import { runSimulation, SimulationError } from '@/lib/dca'
 import { fetchHistoricalPrices, CoinGeckoError } from '@/lib/coingecko'
+import { checkRateLimit, getClientIp } from '@/lib/ratelimit'
+
+const RATE_LIMIT = Number(process.env.RATE_LIMIT_SIMULATE ?? 20)
+const RATE_WINDOW_MS = 60_000
 
 export async function POST(request: NextRequest) {
+  const { allowed, remaining, resetMs } = checkRateLimit(getClientIp(request), RATE_LIMIT, RATE_WINDOW_MS)
+  if (!allowed) {
+    return NextResponse.json(
+      { error: 'Trop de requêtes. Veuillez patienter avant de relancer une simulation.', code: 'RATE_LIMITED' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil(resetMs / 1000)), 'X-RateLimit-Remaining': '0' } },
+    )
+  }
+
   let body: unknown
   try {
     body = await request.json()
@@ -28,7 +40,7 @@ export async function POST(request: NextRequest) {
   try {
     const prices = await fetchHistoricalPrices(params.actif, params.dateDebut, params.dateFin)
     const result = runSimulation(params, prices)
-    return NextResponse.json({ result })
+    return NextResponse.json({ result }, { headers: { 'X-RateLimit-Remaining': String(remaining) } })
   } catch (err) {
     if (err instanceof SimulationError) {
       return NextResponse.json({ error: err.message, code: err.code }, { status: 422 })
