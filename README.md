@@ -54,13 +54,14 @@ pnpm start
 
 ## Déploiement Vercel
 
-1. Importer le repository depuis le dashboard Vercel
-2. Renseigner les variables d'environnement dans **Settings → Environment Variables** :
+1. Forker ce repository (bouton **Fork** en haut à droite sur GitHub)
+2. Importer le fork depuis le dashboard Vercel (**Add New Project → Import Git Repository**)
+3. Renseigner les variables d'environnement dans **Settings → Environment Variables** :
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `NEXT_PUBLIC_APP_URL` (URL du projet Vercel, ex: `https://simu-crypto.vercel.app`)
    - `COINGECKO_API_KEY`
-3. Déployer — Vercel détecte automatiquement Next.js, aucune configuration supplémentaire n'est requise.
+4. Déployer — Vercel détecte automatiquement Next.js, aucune configuration supplémentaire n'est requise.
 
 ## Supabase — configuration
 
